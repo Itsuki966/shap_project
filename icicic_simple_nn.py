@@ -85,7 +85,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.0001, momentum=0.9)
 train_loss_list = []
 test_loss_list = []
 # データセット全体に対して10000回学習
-for epoch in range(10000):
+for epoch in range(200):
     epoch_loss = []
     # バッチごとに学習する
     for x, y_hat in train_loader:
@@ -134,6 +134,7 @@ all_input = torch.tensor(
 
 
 # モデルを保存する
+
 # torch.save(model.state_dict(), "simple_nn_model.pth")
 # torch.save(model, 'model.pth')
 
