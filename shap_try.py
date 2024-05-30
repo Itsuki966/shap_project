@@ -28,7 +28,7 @@ for i in col_list:
   all_data = all_data[all_data[i] < 50]
 
 # データの正規化
-mm = preprocessing.MinMaxScaler()
+# mm = preprocessing.MinMaxScaler()
 
 
 device = 'cpu'
@@ -39,7 +39,7 @@ device = 'cpu'
 target = torch.tensor(all_data["若年層人口"].values.reshape(-1, 1), dtype=torch.float32, device=device)
 # "tip"以外の列を入力にする（tensor型に変換する際に正規化を行う）
 input = torch.tensor(
-    mm.fit_transform(all_data.drop(["year", "area", "code", "若年層人口"], axis=1)),
+    all_data.fit_transform(all_data.drop(["year", "area", "code", "若年層人口"], axis=1)),
     dtype=torch.float32,
     device=device,
 )
