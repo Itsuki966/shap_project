@@ -85,7 +85,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.0001, momentum=0.9)
 train_loss_list = []
 test_loss_list = []
 # データセット全体に対して10000回学習
-for epoch in range(200):
+for epoch in range(10000):
     epoch_loss = []
     # バッチごとに学習する
     for x, y_hat in train_loader:
