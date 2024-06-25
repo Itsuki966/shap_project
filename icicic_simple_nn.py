@@ -34,10 +34,10 @@ for i in col_list:
 device = 'cpu'
 
 # データをPyTorchでの学習に利用できる形式に変換
-# "tip"の列を目的にする（tensor型に変換する際に正規化を行う）
+# "若年層人口"の列を目的にする（tensor型に変換する際に正規化を行う）
 # target = torch.tensor(mm.fit_transform(all_data['若年層人口'].values.reshape(-1, 1)), dtype=torch.float32, device=device)
 target = torch.tensor(all_data["若年層人口"].values.reshape(-1, 1), dtype=torch.float32, device=device)
-# "tip"以外の列を入力にする（tensor型に変換する際に正規化を行う）
+# "若年層人口"以外の列を入力にする（tensor型に変換する際に正規化を行う）
 input = torch.tensor(
     all_data.drop(["year", "area", "code","総人口", "若年層人口"], axis=1).values.astype(np.float32),
     dtype=torch.float32,
