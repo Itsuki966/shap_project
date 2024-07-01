@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 import japanize_matplotlib
 
 # 分析データの読み込み
-df00_05 = pd.read_excel('/Users/itsukikuwahara/Desktop/shap_project/processed_data_main.xlsx', sheet_name='00_05', index_col=0)
-df_05_10 = pd.read_excel('/Users/itsukikuwahara/Desktop/shap_project/processed_data_main.xlsx', sheet_name='05_10', index_col=0)
-df_10_15 = pd.read_excel('/Users/itsukikuwahara/Desktop/shap_project/processed_data_main.xlsx', sheet_name='10_15', index_col=0)
+df00_05 = pd.read_excel('ファイルパス', sheet_name='00_05', index_col=0)
+df_05_10 = pd.read_excel('ファイルパス', sheet_name='05_10', index_col=0)
+df_10_15 = pd.read_excel('ファイルパス', sheet_name='10_15', index_col=0)
 
 df_alldata = pd.concat([df00_05, df_05_10, df_10_15])
 all_data = df_alldata.reset_index(drop=True)
@@ -27,8 +27,8 @@ for i in col_list:
   all_data = all_data[all_data[i] < 50]
 
 # SHAP値の読み込み
-shap_values_young = np.load("/Users/itsukikuwahara/Desktop/shap_project/shap_values_young.npy")
-shap_values_all = np.load("/Users/itsukikuwahara/Desktop/shap_project/shap_values_all.npy")
+shap_values_young = np.load("ファイルパス")
+shap_values_all = np.load("ファイルパス")
 
 
 # 棒グラフによる特徴量重要度の可視化
