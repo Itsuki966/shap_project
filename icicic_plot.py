@@ -50,42 +50,51 @@ labels = all_data.drop(["year", "area", "code","総人口", "若年層人口"], 
 label_list = list(labels)
 ave_shap_list = list(ave_shap_values)
 ave_shap_list_all = list(ave_shap_values_all)
-zip_list = list(zip(ave_shap_list, ave_shap_list_all, label_list))
+zip_list = list(zip(ave_shap_list, ave_shap_list_all, labels))
 zip_list.sort(reverse=False)
-young = [v[0] for v in zip_list]
-all = [v[1] for v in zip_list]
-item_name = [v[2] for v in zip_list]
+young = [zip_list[v][0] for v in range(len(labels))]
+all = [zip_list[v][1] for v in range(len(labels))]
+item_name = [zip_list[v][2] for v in range(len(labels))]
 
 # 棒グラフのプロット
-fig = plt.figure(figsize=[25,60])
-left = np.arange(0, 3*len(ave_shap_values), 3)
+fig = plt.figure(figsize=[10,5])
+# left = np.arange(0, 3*len(ave_shap_values), 3)
+left = np.arange(0, 3*5, 3)
 height = 1.35
 # label = all_data.drop(["year", "area", "code","総人口", "若年層人口"], axis=1).columns.values
-label = item_name
+label = [
+  "Child welfare expenses",
+  "Population commuting/going to school\nin their municipalities",
+  "Number of workers in the tertiary industry",
+  "Number of clinics/100,000",
+  "Number of clinics/habitalbe area",
+]
+# label = item_name[-5:]
 
 barh1 = plt.barh(
     y = left,
-    width = young,
+    width = young[-5:],
     height = height,
     label = 'young',
-    color = 'blue'
+    color = 'black'
 )
 
 barh2 = plt.barh(
     y = left - height,
-    width = all,
+    width = all[-5:],
     height = height,
     label = 'all',
-    color = 'red',
-
+    color = 'lightgray',
+    
+    hatch = "/"
 )
 
-plt.bar_label(barh1, fontsize=30)
-plt.bar_label(barh2, fontsize=30)
-plt.yticks(ticks=left - height/2, labels=label, fontsize=35)
-plt.xticks(fontsize=50)
-plt.legend(loc=0, fontsize=40)
-plt.title('mean(|SHAP Value|)', fontsize=50)
+plt.bar_label(barh1, fontsize=20)
+plt.bar_label(barh2, fontsize=20)
+plt.yticks(ticks=left - height/2, labels=label, fontsize=20)
+plt.xticks(fontsize=20)
+plt.legend(loc=0, fontsize=20)
+plt.title('mean(|SHAP Value|)', fontsize=20)
 plt.show()
 
 
