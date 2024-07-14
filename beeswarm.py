@@ -3,7 +3,7 @@ import torch
 import numpy as np
 import shap
 import matplotlib.pyplot as plt
-import japanize_matplotlib
+# import japanize_matplotlib
 
 # 分析データの読み込み
 df00_05 = pd.read_excel('/Users/itsukikuwahara/Desktop/shap_project/processed_data_main.xlsx', sheet_name='00_05', index_col=0)
