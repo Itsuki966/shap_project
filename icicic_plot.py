@@ -1,4 +1,3 @@
-import shap
 import pandas as pd
 import torch
 import numpy as np
@@ -96,72 +95,3 @@ plt.xticks(fontsize=20)
 plt.legend(loc=0, fontsize=20)
 plt.title('mean(|SHAP Value|)', fontsize=20)
 plt.show()
-
-
-# beeswarm plotを使った可視化
-
-# 若年層人口が増加している市町村の抽出とデータの加工
-# 若年層人口が増加している都市のみのデータフレームを作成
-# shap_df = all_data.mask(all_data['若年層人口'] <= 0)
-# # young_df = shap_df.drop(["year", "area", "code","総人口", "若年層人口"], axis=1)
-
-# # 若年層人口が増加している都市のみのデータフレームをtorch.tensor型に変更
-# young_input = torch.tensor(
-#     shap_df.drop(["year", "area", "code","総人口", "若年層人口"], axis=1).values.astype(np.float32),
-#     dtype=torch.float32
-# )
-
-# young_target = torch.tensor(
-#     shap_df['若年層人口'].values.astype(np.float32),
-#     dtype=torch.float32
-# )
-
-# # 全ての市町村のデータもtorch.tensor型に変更
-# all_input = torch.tensor(
-#     all_data.drop(["year", "area", "code","総人口", "若年層人口"], axis=1).values.astype(np.float32),
-#     dtype=torch.float32,
-# )
-
-# # 若年層人口が増加している市町村のExplanationオブジェクト
-# Explanation_young = shap.Explanation(
-#     values = shap_values_young,
-#     # base_values = expected_value,
-#     data = young_input,
-#     # display_data = shap_df,
-#     feature_names = all_data.drop(["year", "area", "code","総人口", "若年層人口"], axis=1).columns.values,
-# )
-
-# print(f"shap_values_young:{len(shap_values_young)}, young_inut:{len(young_input)}")
-
-# # 全ての市町村のExplanationオブジェクト
-# Explanation_all = shap.Explanation(
-#     values = shap_values_all,
-#     # base_values = explainer.expected_value,
-#     data = all_input,
-#     # display_data = shap_df
-#     feature_names = all_data.drop(["year", "area", "code","総人口", "若年層人口"], axis=1).columns.values
-# )
-
-# # 結果のプロット(若年層)
-# shap.plots.beeswarm(
-#     Explanation_young,
-#     max_display=5,
-#     plot_size = (25,20),
-#     show = False
-# )
-
-# ax = plt.gca()
-# ax.tick_params(labelsize=40)
-# ax.set_xlabel('SHAP values (impact on model output)', fontsize=44)
-
-# # 結果のプロット（全ての市町村）
-# shap.plots.beeswarm(
-#     Explanation_all,
-#     max_display=5,
-#     plot_size = (25,20),
-#     show = False
-# )
-
-# ax = plt.gca()
-# ax.tick_params(labelsize=40)
-# ax.set_xlabel('SHAP values (impact on model output)', fontsize=44)
