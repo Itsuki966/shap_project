@@ -132,6 +132,16 @@ all_input = torch.tensor(
     dtype=torch.float32,
 )
 
+no_young_input = torch.tensor(
+    all_data.mask(all_data['若年層人口'] > 0).drop(["year", "area", "code","総人口", "若年層人口"], axis=1).values.astype(np.float32),
+    dtype=torch.float32,
+)
+
+no_young_target = torch.tensor(
+    all_data.mask(all_data['若年層人口'] > 0)['若年層人口'].values.astype(np.float32),
+    dtype=torch.float32
+)
+
 
 # モデルを保存する
 
@@ -148,8 +158,11 @@ explainer = shap.DeepExplainer(model, input)
 shap_values_all = explainer.shap_values(input, check_additivity=False)
 # #若年層人口が増加している市町村に対してのSHAP値の算出
 shap_values_young = explainer.shap_values(young_input, check_additivity=False)
+# 若年層が減少している市町村にたいしてSHAP値の算出
+shap_values_no_young = explainer.shap_values(no_young_input, check_additivity=False)
 
 # SHAP値の保存
-np.save('shap_values_all', shap_values_all)
-np.save("shap_values_young", shap_values_young)
-np.save('shap_values_expected', explainer.expected_value)
+# np.save('shap_values_all', shap_values_all)
+# np.save("shap_values_young", shap_values_young)
+np.save("shap_values_no_young", shap_values_no_young)
+# np.save('shap_values_expected', explainer.expected_value)

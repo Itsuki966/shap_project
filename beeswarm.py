@@ -13,6 +13,7 @@ df_10_15 = pd.read_excel('/Users/itsukikuwahara/Desktop/shap_project/processed_d
 # SHAP値の読み込み
 shap_values_young = np.load("/Users/itsukikuwahara/Desktop/shap_project/shap_values_young.npy")
 shap_values_all = np.load("/Users/itsukikuwahara/Desktop/shap_project/shap_values_all.npy")
+shap_valuse_no_young = np.load("/Users/itsukikuwahara/Desktop/shap_project/shap_values_no_young.npy")
 
 df_alldata = pd.concat([df00_05, df_05_10, df_10_15])
 all_data = df_alldata.reset_index(drop=True)
@@ -61,6 +62,12 @@ all_input = torch.tensor(
     dtype=torch.float32,
 )
 
+# 若年層人口が増加していない市町村のデータもtorch.tensor型に変更
+no_young_input = torch.tensor(
+    all_data.mask(all_data['若年層人口'] > 0).drop(["year", "area", "code","総人口", "若年層人口"], axis=1).values.astype(np.float32),
+    dtype=torch.float32,
+)
+
 # 若年層人口が増加している市町村のExplanationオブジェクト
 Explanation_young = shap.Explanation(
     values = shap_values_young,
@@ -77,30 +84,54 @@ Explanation_all = shap.Explanation(
     feature_names = label_list
 )
 
+# 若年層人口が増加していない市町村のExplanationオブジェクト
+Explanation_no_young = shap.Explanation(
+    values = shap_valuse_no_young,
+    data = no_young_input,
+    feature_names = label_list
+)
+
 # 結果のプロット(若年層)
+# shap.plots.beeswarm(
+#     Explanation_young,
+#     max_display=6,
+#     plot_size = (10,6),
+#     show = False,
+#     color = plt.get_cmap('Greys')
+# )
+
+# ax = plt.gca()
+# ax.tick_params(labelsize=20)
+# ax.set_xlabel('SHAP values (impact on model output)', fontsize=20)
+# plt.show()
+
+# # 結果のプロット（全ての市町村）
+# shap.plots.beeswarm(
+#     Explanation_all,
+#     max_display=6,
+#     plot_size = (10,6),
+#     show = False,
+#     color = plt.get_cmap('Greys')
+# )
+
+# ax = plt.gca()
+# ax.tick_params(labelsize=20)
+# ax.set_xlabel('SHAP values (impact on model output)', fontsize=20)
+# plt.show()
+
 shap.plots.beeswarm(
-    Explanation_young,
-    max_display=6,
+    Explanation_no_young,
+    max_display=30,
     plot_size = (10,6),
-    show = False,
-    color = plt.get_cmap('Greys')
+    show = False
 )
 
 ax = plt.gca()
-ax.tick_params(labelsize=20)
+ax.tick_params(labelsize=10)
 ax.set_xlabel('SHAP values (impact on model output)', fontsize=20)
 plt.show()
 
-# 結果のプロット（全ての市町村）
-shap.plots.beeswarm(
-    Explanation_all,
-    max_display=6,
-    plot_size = (10,6),
-    show = False,
-    color = plt.get_cmap('Greys')
+shap.plots.bar(
+    Explanation_no_young,
+    max_display=30,
 )
-
-ax = plt.gca()
-ax.tick_params(labelsize=20)
-ax.set_xlabel('SHAP values (impact on model output)', fontsize=20)
-plt.show()
